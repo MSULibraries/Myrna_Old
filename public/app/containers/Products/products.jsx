@@ -2,6 +2,8 @@
 import React, { Component, PropTypes } from 'react';
 import Picture from '../../components/picture.jsx';
 import ShoppingCart from '../../components/shoppingcart.jsx';
+import Login from '../../components/login.jsx';
+import NavBar from '../../components/NavBar.jsx';
 import { browserHistory } from 'react-router';
 import cart from '../../reducers/index.js';
 
@@ -68,8 +70,9 @@ export default class Products extends Component {
 		//console.log(this.state.clothingData);
 		return (
       <div>
-        <Picture className = "test" src = {this.state.clothingData} onClick = { () => {browserHistory.push('/Product'); }} name = {"joe"} />
-		<ShoppingCart />
+       <Picture className = "test" src = {this.state.clothingData} onClick = { () => {browserHistory.push('/Product'); }} name = {"joe"} />
+		   <ShoppingCart />
+			 <Login />
       </div>
     );
 	}

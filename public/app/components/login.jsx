@@ -3,7 +3,16 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { browserHistory } from 'react-router';
 import firebase from 'firebase';
+import Config from '../credentials/'
 
+/* Firebase credentials*/
+const app = firebase.initializeApp({
+    apiKey: Config.apiKey,
+    authDomain: Config.authDomain,
+    databaseURL: Config.databaseURL,
+    storageBucket: Config.storageBucket,
+    messagingSenderId: Config.messagingSenderId
+});
 
 /* Extension of React.Js component class
 // Methods set here
@@ -17,23 +26,12 @@ export default class Home extends Component {
     this.credits = this.credits.bind(this);
     this.login = this.login.bind(this);
     this.check = this.check.bind(this);
-	this.connect = this.connect.bind(this);
-    this.state = {userName: '', password: ''};
+    this.state = {userName: '', password: '', newUser: false};
   }
   
   /* Creates new user with login (email) and custom password.
   // Error given if fails, via callback promises
   */
-  
-  connect(){
-	  fetch('/test')
-	  .then(function(response){
-		  console.log(response);
-	  })
-	  .catch(function(error){
-		  console.log(error);
-	  })  
-  }
   
   click() {
     console.log('user verified');  
@@ -108,22 +106,22 @@ export default class Home extends Component {
     const errorMessage = error.message;
     if (errorCode === 'auth/user-not-found') {
          ref.color = 'red';
+         this.setState({ newUser: true });
          console.log(errorMessage);
        }
       });  
    }
+   
  
    /* React.render method and JSX*/
    render() {
      return (
       <div>
         <Helmet title="Home"/>
-        <h1>Hello World</h1>
         &nbsp; &nbsp; <label ref = "email" >User Name: <input value = {this.state.userName} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
         &nbsp; &nbsp; <label>Password <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label><br />
-        &nbsp; &nbsp; <button onClick = {this.click} className = "btn btn-success">Register</button><br />
+        {this.state.newUser == true &&  <div><label>Organization <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label></div>}
         &nbsp; &nbsp; <button onClick = {this.login} className = "btn btn-success">Login</button><br />
-		<button onClick = {this.connect} >Test Connection</button>
       </div>
     );
   }
