@@ -123,6 +123,6 @@ export default class Home extends Component {
         {this.state.newUser == true &&  <div><label>Organization <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label></div>}
         &nbsp; &nbsp; <button onClick = {this.login} className = "btn btn-success">Login</button><br />
       </div>
-    );
+    ); 
   }
 }// React's Component class ends here.
