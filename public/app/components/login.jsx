@@ -25,7 +25,7 @@ export default class Home extends Component {
     this.click = this.click.bind(this);
     this.credits = this.credits.bind(this);
     this.check = this.check.bind(this);
-    this.state = {userName: '', password: '', org: '', valid: false};
+    this.state = {userName: '', password: '1', org: '', valid: false};
   }
   
   /* Creates new user with login (email) and custom password.
@@ -77,7 +77,7 @@ export default class Home extends Component {
    */
    check() {
      const email = this.state.userName;
-     const password = '1';
+     const password = this.state.password;
      const ref = this.refs.email.style;
      firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
       console.log('valid email');
@@ -102,7 +102,7 @@ export default class Home extends Component {
         &nbsp; &nbsp; <label ref = "email" >User Name: <input value = {this.state.userName} onFocus = {() => {this.setState({valid: false}); this.refs.email.style.color = 'black'; }} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
         &nbsp; &nbsp; <label>Password <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label><br />
         &nbsp; &nbsp; {this.state.valid ? <label> Org <input value = {this.state.org} onChange = { (event) => this.credits(event, 3)}  type = "text" /></label>: <div></div>}<br/>
-        &nbsp; &nbsp; <button onClick = {this.login} className = "btn btn-danger">Login</button>
+        &nbsp; &nbsp; {!this.state.valid ? <button onClick = {this.check} className = "btn btn-danger">Login</button> : <div></div>}
         {this.state.valid ? <button onClick = {this.click} className = "btn btn-caution">Register</button> : <div></div>}
       </div>
     ); 
