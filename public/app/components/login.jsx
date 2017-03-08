@@ -24,9 +24,8 @@ export default class Home extends Component {
     super(props);
     this.click = this.click.bind(this);
     this.credits = this.credits.bind(this);
-    this.login = this.login.bind(this);
     this.check = this.check.bind(this);
-    this.state = {userName: '', password: '', newUser: false};
+    this.state = {userName: '', password: '', org: '', valid: false};
   }
   
   /* Creates new user with login (email) and custom password.
@@ -47,28 +46,7 @@ export default class Home extends Component {
     });
   }
   
-  /* Logs user in if their email and password matches what's in the Firebase DB
-  // Error given if fails, via callback promises
-  */
-  login() {
-   const email = this.state.userName;
-   const password = this.state.password;
-   firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-      browserHistory.push('/Login');
-   })
-    .catch(function(error) {
-  // Handle Errors here.
-  const errorCode = error.code;
-  const errorMessage = error.message;
-  console.log(errorCode, errorMessage);
-  if (errorCode === 'auth/wrong-password') {
-      alert('Wrong password.');
-      } else {
-          alert(errorMessage);
-        }
-      console.log(error);
-    });
-  }
+
   
   /* Sets the State for the username and password for auth.
   // Gets ran once the user begins typing
@@ -82,6 +60,10 @@ export default class Home extends Component {
    
      case 2:
      this.setState({ password: event.target.value });
+     break;
+     
+     case 3:
+     this.setState({ org: event.target.value });
      break;
    
      default:
@@ -100,28 +82,28 @@ export default class Home extends Component {
      firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
       console.log('valid email');
      })
-     .catch(function(error) {
+     .catch( (error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
     if (errorCode === 'auth/user-not-found') {
          ref.color = 'red';
-         this.setState({ newUser: true });
+         this.setState({valid: true});
          console.log(errorMessage);
        }
       });  
    }
-   
  
    /* React.render method and JSX*/
    render() {
      return (
       <div>
         <Helmet title="Home"/>
-        &nbsp; &nbsp; <label ref = "email" >User Name: <input value = {this.state.userName} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
+        &nbsp; &nbsp; <label ref = "email" >User Name: <input value = {this.state.userName} onFocus = {() => {this.setState({valid: false}); this.refs.email.style.color = 'black'; }} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
         &nbsp; &nbsp; <label>Password <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label><br />
-        {this.state.newUser == true &&  <div><label>Organization <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label></div>}
-        &nbsp; &nbsp; <button onClick = {this.login} className = "btn btn-success">Login</button><br />
+        &nbsp; &nbsp; {this.state.valid ? <label> Org <input value = {this.state.org} onChange = { (event) => this.credits(event, 3)}  type = "text" /></label>: <div></div>}<br/>
+        &nbsp; &nbsp; <button onClick = {this.login} className = "btn btn-danger">Login</button>
+        {this.state.valid ? <button onClick = {this.click} className = "btn btn-caution">Register</button> : <div></div>}
       </div>
     ); 
   }
