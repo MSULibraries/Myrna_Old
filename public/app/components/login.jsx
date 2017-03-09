@@ -25,7 +25,7 @@ export default class Home extends Component {
     this.click = this.click.bind(this);
     this.credits = this.credits.bind(this);
     this.check = this.check.bind(this);
-    this.state = {userName: '', password: '1', org: '', valid: false};
+    this.state = {userName: '', password: '', org: '', valid: false};
   }
   
   /* Creates new user with login (email) and custom password.
@@ -77,7 +77,7 @@ export default class Home extends Component {
    */
    check() {
      const email = this.state.userName;
-     const password = this.state.password;
+     const password = "1";
      const ref = this.refs.email.style;
      firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
       console.log('valid email');
@@ -104,7 +104,7 @@ export default class Home extends Component {
         &nbsp; &nbsp; {this.state.valid ? <label> Org <input value = {this.state.org} onChange = { (event) => this.credits(event, 3)}  type = "text" /></label>: <div></div>}<br/>
         &nbsp; &nbsp; {!this.state.valid ? <button onClick = {this.check} className = "btn btn-danger">Login</button> : <div></div>}
         {this.state.valid ? <button onClick = {this.click} className = "btn btn-caution">Register</button> : <div></div>}
-      </div>
+      </div> 
     ); 
   }
 }// React's Component class ends here.
