@@ -22,37 +22,66 @@ const app = firebase.initializeApp({
 export default class Home extends Component {
     constructor(props) {
     super(props);
-    this.click = this.click.bind(this);
+    this.register = this.register.bind(this);
     this.credits = this.credits.bind(this);
-    this.check = this.check.bind(this);
+    this.checkUser = this.checkUser.bind(this);
+    this.login = this.login.bind(this);
     this.state = {userName: '', password: '', org: '', valid: false};
+  }
+  
+   checkUser() { 
+    const email = this.state.userName;
+    const password = "1";
+    const ref = this.refs.email.style;
+    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;  
+    console.log(errorMessage); 
+    if (errorCode === 'auth/user-not-found') {
+     ref.color = 'red';
+     this.setState({valid: true});
+    }
+    });
   }
   
   /* Creates new user with login (email) and custom password.
   // Error given if fails, via callback promises
   */
   
-  click() {
+  register() {
     console.log('user verified');  
     console.log(this.state.userName); 
     console.log(this.state.password); 
     const email = this.state.userName;
     const password = this.state.password;
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch( function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(function(){
+      console.log('user created');
+    })
+    .catch(function(error) {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;  
-    console.log(errorCode); 
+    console.log(errorMessage); 
     });
   }
   
+   login() {
+   const email = this.state.userName;
+   const password = this.state.password;
+   firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+      //browserHistory.push('/Login');
+      console.log('logged in');
+     })
+   }
 
   
   /* Sets the State for the username and password for auth.
   // Gets ran once the user begins typing
   // Switch statement: case 1 - username, case 2 - password, default - user not typing, so break
   */ 
-  credits(event, val) {
+  credits(event, val){
     switch (val) {
      case 1:
        this.setState({ userName: event.target.value });
@@ -71,39 +100,16 @@ export default class Home extends Component {
      }
    }
    
-   /* Checks to see if the user is in the firebase DB or not, based off their email.
-   // If user is not in firebase DB, the user will be alerted.
-   // If user is in firebase DB, the user will then be allowed to enter their pw
-   */
-   check() {
-     const email = this.state.userName;
-     const password = "1";
-     const ref = this.refs.email.style;
-     firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-      console.log('valid email');
-     })
-     .catch( (error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    if (errorCode === 'auth/user-not-found') {
-         ref.color = 'red';
-         this.setState({valid: true});
-         console.log(errorMessage);
-       }
-      });  
-   }
- 
    /* React.render method and JSX*/
    render() {
      return (
       <div>
         <Helmet title="Home"/>
-        &nbsp; &nbsp; <label ref = "email" >User Name: <input value = {this.state.userName} onFocus = {() => {this.setState({valid: false}); this.refs.email.style.color = 'black'; }} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
-        &nbsp; &nbsp; <label>Password <input value = {this.state.password} onFocus = {this.check} onChange = { (event) => this.credits(event, 2)} type = "text" /></label><br />
-        &nbsp; &nbsp; {this.state.valid ? <label> Org <input value = {this.state.org} onChange = { (event) => this.credits(event, 3)}  type = "text" /></label>: <div></div>}<br/>
-        &nbsp; &nbsp; {!this.state.valid ? <button onClick = {this.check} className = "btn btn-danger">Login</button> : <div></div>}
-        {this.state.valid ? <button onClick = {this.click} className = "btn btn-caution">Register</button> : <div></div>}
+        <label ref = "email" >User Name: <input value = {this.state.userName} onFocus = {() => {this.setState({valid: false}); this.refs.email.style.color = 'black'; }} onChange = { (event) => this.credits(event, 1)} type = "text" /></label><br />
+        <label>Password <input value = {this.state.password} onFocus = {this.checkUser} onChange = { (event) => this.credits(event, 2)} type = "password" /></label><br />
+        {this.state.valid ? <label> Org <input value = {this.state.org} onChange = { (event) => this.credits(event, 3)}  type = "text" /></label>: <div></div>}<br/>
+        {!this.state.valid ? <button onClick = {this.login} className = "btn btn-danger">Login</button> : <div></div>}
+        {this.state.valid ? <button onClick = {this.register} className = "btn btn-warning">Register</button> : <div></div>}
       </div> 
     ); 
   }
