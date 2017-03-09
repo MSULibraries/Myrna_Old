@@ -4,14 +4,6 @@ import Helmet from 'react-helmet';
 import { browserHistory } from 'react-router';
 import firebase from 'firebase';
 
-/* Firebase credentials*/
-const app = firebase.initializeApp({
-    apiKey: '****************',
-    authDomain: '**********************',
-    databaseURL: '***************************',
-    storageBucket: '*******************************',
-    messagingSenderId: '******************************'
-});
 
 /* Extension of React.Js component class
 // Methods set here
