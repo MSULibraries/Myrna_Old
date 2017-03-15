@@ -3,15 +3,16 @@ export default class NavBar extends Component {
 	render(){
  
     return (
-     
+     <div className="container-fluid">
       <div className="navbar row">
-        <div className="col-md-12">
+          <div className="col-xs-12 col-sm-5 col-md-9 col-sm-offset-2 col-md-offset-2 col-lg-offset-3 ">
         <ul>
-         <li className="dropdown col-md-offset-3" id="nav-item">
-            <a href="#" className="dropdown-btn">Clothes</a>
+         <li className="dropdown">
+            <a id="nav-item" href="#" className="dropdown-btn">Clothes</a>
             <div className="dropdown-items">
-              <h2 className="col-md-12">View All</h2>
-              <ul className="column1 col-md-2">  
+              <div className="row">    
+              <h2 className="col-sm-12 col-xs-offset-3 col-sm-offset-1 col-md-12 col-md-offset-1" id="view-all"><a href="#">View All</a></h2>
+              <ul className="col-xs-12 col-md-1 col-md-offset-1">  
                 <li><a href="#">Aprons</a></li>
                 <li><a href="#">Capes</a></li>
                 <li><a href="#">Dancewear</a></li>
@@ -21,7 +22,7 @@ export default class NavBar extends Component {
                 <li><a href="#">Nightwear</a></li>
                 <li><a href="#">Pants</a></li>
               </ul>
-              <ul className="column2 col-md-offset-1 col-md-2">
+              <ul className="col-md-offset-1 col-md-1">
                 <li><a href="#">Robes</a></li>
                 <li><a href="#">Shawls</a></li>
                 <li><a href="#">Shirts</a></li>
@@ -32,13 +33,15 @@ export default class NavBar extends Component {
                 <li><a href="#">Vests</a></li>
               </ul> 
             </div> 
+            </div>  
         </li>
-        <li id="nav-item"><a href="#">About</a></li>
-        <li id="nav-item"><a href="#">Policies</a></li>
-        <li id="nav-item"><a href="#">How To Rent</a></li>
-        <li id="nav-item"><a href="#">Contact</a></li>   
+        <li><a id="nav-item" href="#">About</a></li>
+        <li><a id="nav-item" href="#">Policies</a></li>
+        <li><a id="nav-item" href="#">How To Rent</a></li>
+        <li><a id="nav-item" href="#">Contact</a></li>   
         </ul> 
         </div>  
+      </div>
       </div>
     );
   }
